@@ -195,7 +195,7 @@ class CodeSlide extends React.Component {
         dangerouslySetInnerHTML={{
 					__html: showLineNumbers
 						? getLineNumber(index) + line
-						: line
+						: `<span></span>${line}`
 				}}
         style={{ opacity: calculateOpacity(index, locs) }}/>;
     });
