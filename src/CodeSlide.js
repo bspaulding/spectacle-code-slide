@@ -58,8 +58,13 @@ class CodeSlide extends React.Component {
       locs: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
       title: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
       note: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
-    }))
+    })),
+		showLineNumbers: PropTypes.bool
   };
+
+	static defaultProps = {
+		showLineNumbers: false
+	};
 
   static contextTypes = {
     store: React.PropTypes.object.isRequired,
@@ -174,7 +179,7 @@ class CodeSlide extends React.Component {
   }
 
   render() {
-    const {code, lang, ranges, color, bgColor, notes, ...rest} = this.props;
+    const {code, lang, ranges, color, bgColor, notes, showLineNumbers, ...rest} = this.props;
     const {active} = this.state;
 
     const range = ranges[active] || {};
@@ -187,7 +192,11 @@ class CodeSlide extends React.Component {
       return <div
         key={index}
         ref={startOrEnd(index, locs)}
-        dangerouslySetInnerHTML={{ __html: getLineNumber(index) + line }}
+        dangerouslySetInnerHTML={{
+					__html: showLineNumbers
+						? getLineNumber(index) + line
+						: line
+				}}
         style={{ opacity: calculateOpacity(index, locs) }}/>;
     });
 
