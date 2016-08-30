@@ -13,18 +13,20 @@ const calculateScrollCenter = require('./calculateScrollCenter');
 const scrollToElement = require('./scrollToElement');
 const getComputedCodeStyle = require('./getComputedCodeStyle');
 
-function startOrEnd(index, loc) {
-  if (index === loc[0]) {
-    return 'start';
-  } else if (index - 1 === loc[1]) {
-    return 'end';
-  } else {
-    return null;
-  }
+function startOrEnd(index, locs) {
+	if (index === locs[0][0]) {
+		return 'start';
+	} else if (index - 1 === locs[locs.length - 1][1]) {
+		return 'end';
+	} else {
+		return null;
+	}
 }
 
-function calculateOpacity(index, loc) {
-  return (loc[0] <= index && loc[1] > index) ? 1 : 0.2;
+function calculateOpacity(index, locs) {
+  return locs.find(loc => (
+		loc[0] <= index && loc[1] > index
+	)) ? 1 : 0.2;
 }
 
 function getLineNumber(index) {
@@ -52,7 +54,8 @@ class CodeSlide extends React.Component {
     lang: PropTypes.string.isRequired,
     code: PropTypes.string.isRequired,
     ranges: PropTypes.arrayOf(PropTypes.shape({
-      loc: PropTypes.arrayOf(PropTypes.number).isRequired,
+      loc: PropTypes.arrayOf(PropTypes.number),
+      locs: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
       title: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
       note: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
     }))
@@ -175,7 +178,7 @@ class CodeSlide extends React.Component {
     const {active} = this.state;
 
     const range = ranges[active] || {};
-    const loc = range.loc || [];
+    const locs = range.locs || range.loc && [range.loc] || [];
     const slideBg = bgColor || defaultBgColor;
 
     style.color = color || style.color;
@@ -183,9 +186,9 @@ class CodeSlide extends React.Component {
     const lines = getHighlightedCodeLines(code, lang).map((line, index) => {
       return <div
         key={index}
-        ref={startOrEnd(index, loc)}
+        ref={startOrEnd(index, locs)}
         dangerouslySetInnerHTML={{ __html: getLineNumber(index) + line }}
-        style={{ opacity: calculateOpacity(index, loc) }}/>;
+        style={{ opacity: calculateOpacity(index, locs) }}/>;
     });
 
     return (
