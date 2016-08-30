@@ -63,7 +63,7 @@ class CodeSlide extends React.Component {
   };
 
 	static defaultProps = {
-		showLineNumbers: false
+		showLineNumbers: true
 	};
 
   static contextTypes = {
