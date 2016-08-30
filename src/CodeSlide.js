@@ -39,7 +39,7 @@ const defaultColor = computedCodeStyle.color || "white";
 
 const style = {
   position: 'relative',
-  textAlign: 'left',
+  textAlign: 'center',
   overflow: 'hidden',
   color: defaultColor,
   height: '646px',
@@ -205,7 +205,7 @@ class CodeSlide extends React.Component {
         {range.title && <CodeSlideTitle>{range.title}</CodeSlideTitle>}
 
         <pre ref="container" style={style}>
-          <code>{lines}</code>
+          <code style={{ display: "inline-block", textAlign: "left" }}>{lines}</code>
         </pre>
 
         {range.note && <CodeSlideNote>{range.note}</CodeSlideNote>}
