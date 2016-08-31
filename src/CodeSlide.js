@@ -68,6 +68,7 @@ class CodeSlide extends React.Component {
 
   static contextTypes = {
     store: React.PropTypes.object.isRequired,
+		styles: PropTypes.object,
     updateNotes: React.PropTypes.func
   };
 
@@ -184,7 +185,7 @@ class CodeSlide extends React.Component {
 
     const range = ranges[active] || {};
     const locs = range.locs || range.loc && [range.loc] || [];
-    const slideBg = bgColor || defaultBgColor;
+    const slideBg = bgColor || this.context.styles.global.body.background || defaultBgColor;
 
     style.color = color || style.color;
 
