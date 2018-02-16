@@ -15,8 +15,9 @@ const styles = {
 
 class CodeSlideTitle extends React.Component {
   render() {
+		const { headerColor: color = styles.color } = this.props;
     return (
-      <h1 style={styles}>{this.props.children}</h1>
+      <h1 style={{ ...styles, color }}>{this.props.children}</h1>
     );
   }
 }
